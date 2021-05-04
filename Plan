@@ -1,0 +1,19 @@
+
+1. markers (formating, size, everything)
+2. ouput also html
+3. shiny design - theme, layout
+4. error handling (sweet alert messages)
+5. Make tutorial.md
+6. incorporate own images (downloading, and adding to markers) (ATTEMPT!)
+
+
+other stuff:
+  country borders
+  upload own shape files 
+    
+  incorparate country/city info
+  selectable projections
+  clustering (NULL problem)
+  font type
+  summary stat of number of countries visited, ... (spatial transfor)
+
