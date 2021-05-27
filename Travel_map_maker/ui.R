@@ -14,6 +14,7 @@ library(shinyWidgets)
 library(shinythemes)
 library(colourpicker)
 library(shinyBS)
+library(shinyalert)
 
 markerColors = c(
     "red",

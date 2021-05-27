@@ -15,6 +15,7 @@ library(colourpicker)
 library(leafpop)
 library(shinyWidgets)
 library(colourpicker)
+library(varhandle)
 
 # EPSG 54042, SR-ORG:7291
 
@@ -85,6 +86,8 @@ shinyServer(function(input, output) {
   output$coor_range <- renderText({
     if(is.null(input$file1)){return ()}
     dch = filedata()
+    
+    
     #ifelse(dch$long < 90 & dch$long> -90, "\n Well done", "Wrong format")
     # if ((min(as.numeric(dch$long)) < -90 | max(as.numeric(dch$long)) > 90) | 
     #     (min(dch$lat) < -180 | max(dch$lat) > 180)){
@@ -94,12 +97,51 @@ shinyServer(function(input, output) {
     print(head(dch))
   })
   
-   observeEvent(input$success, {
-    show_alert(
-      title = "Success !!",
-      text = "All in order",
-      type = "success"
-    )
+  
+  error_check <- function(){
+    df = filedata()
+    len = length(df$long)
+    if (ncol(df)<2){
+      show_alert(
+        title = "Error !!",
+        text = "it seems that you have uchosen the wrong seperator. Try and check the box with the right seperator for your data",
+        type = "error"
+      )
+    }
+    else if(!sum(check.numeric(df$long)+check.numeric(df$lat)) == len*2){
+      show_alert(
+        title = "Error !!",
+        text = "not numeric",
+        type = "error"
+      )
+      
+    }
+    else if(!sum(df$long <= 90 & df$long >= -90) == len ){
+      show_alert(
+        title = "Error !!",
+        text = "longitude error",
+        type = "error")
+    }
+    
+    else if(!sum(df$lat <= 180 & df$lat>= -180) == len ){
+      show_alert(
+        title = "Error !!",
+        text = "latitude error",
+        type = "error")
+    }
+    else {
+      show_alert(
+        title = "Success !!",
+        text = "All in order",
+        type = "success"
+      )
+    }
+  }
+  
+  
+   observeEvent(input$file1,{
+     if (req(input$file1) ==0){return()}
+     error_check()
   })
 
   observeEvent(input$error, {
@@ -113,17 +155,18 @@ shinyServer(function(input, output) {
 
   
   merged_df <- reactive({
-    if(is.null(input$file2)){return ()}
     if(is.null(input$file1)){return ()}
     df = filedata()
-    input$file2 %>% 
-      rename(Image_name = name) %>% 
-      merge(df, by = "Image_name")
+    if(!is.null(input$file2)){
+     df = input$file2 %>% 
+        rename(Image_name = name) %>% 
+        merge(df, by = "Image_name")
+    }
+    df
   })
   
   
   output$fileob <- renderPrint({
-    if(is.null(input$file2)){return ()}
     if(is.null(input$file1)){return ()}
     df = filedata()
     # input$file2 %>% 
@@ -144,7 +187,6 @@ shinyServer(function(input, output) {
       merge(df, by = "Image_name")
   })
   output$contents = renderDataTable({
-    if(is.null(input$file2)){return ()}
     if(is.null(input$file1)){return ()}
     df = filedata()
     return(df)
@@ -194,8 +236,7 @@ shinyServer(function(input, output) {
       ) %>%
       addControl(map_title, "bottomleft")
     
-    
-    if (!is.null(df)) {
+    if(!is.null(df)){
       
       icons <- makeAwesomeIcon(
         text = fa(input$icon),
@@ -205,7 +246,7 @@ shinyServer(function(input, output) {
         squareMarker = input$square_markers
       )
       
-      plot %>%
+      marker_plot <- plot %>%
         addAwesomeMarkers(
           data = df,
           lng = df$long,
@@ -215,9 +256,17 @@ shinyServer(function(input, output) {
           group = "pnts",
           #clusterOptions = markerClusterOptions(),
           options = markerOptions(opacity = 0.8)
-        ) %>%
+        )
+    }
+    
+    if (!is.null(df) & !is.null(df$datapath)) {
+      marker_plot%>%
         addPopupImages(df$datapath, "pnts", 150)
-    } else {
+    }
+    else if (!is.null(df)){
+      marker_plot
+    }
+    else {
       plot
     }
   })
