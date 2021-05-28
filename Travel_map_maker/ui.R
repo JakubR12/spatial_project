@@ -147,7 +147,11 @@ shinyUI(fluidPage(
                 circle = FALSE,
                 label = "Download Options",
                 icon = icon("download")
-            )
+            ),
+           textInput("chd","Day seperator","d"),
+           textInput("chm","Minute seperator","'"),
+           textInput("chs","Second seperator","\""),
+           checkboxInput("dms", "DMS", F)
         ),
         
         # Show a plot of the generated distribution
