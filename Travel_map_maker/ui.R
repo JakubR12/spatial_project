@@ -39,7 +39,7 @@ markerColors = c(
 )
 
 # Define UI for application that draws a histogram
-shinyUI(fluidPage(
+shinyUI(fluidPage(useShinyalert(),
     theme = shinytheme("readable"),
     # Application title
     titlePanel("Travel Map Maker Tool"),
@@ -47,27 +47,27 @@ shinyUI(fluidPage(
     # Sidebar with a slider input for number of bins
     sidebarLayout(
         sidebarPanel(
-           "Welcome to the traval map maker tool! This tool lets you create and customize interactive maps of whre you have traveled and lets you share the result with your friends and family.",
-           dropdownButton(
-               fileInput(
-                   "file1",
-                   "Choose your CSV File",
-                   accept = c("text/csv",
-                              "text/comma-separated-values,text/plain",
-                              ".csv")
-               ),
-               
-           radioButtons(
-               "seperator",
-               label = 'Separator',
-               choices = c(
-                   Comma = ',',
-                   Semicolon = ';',
-                   Tab = '\t',
-                   Space = ''
-               ),
-               selected = ','
-           ), 
+            "Welcome to the traval map maker tool! This tool lets you create and customize interactive maps of whre you have traveled and lets you share the result with your friends and family.",
+            dropdownButton(
+                fileInput(
+                    "file1",
+                    "Choose your CSV File",
+                    accept = c("text/csv",
+                               "text/comma-separated-values,text/plain",
+                               ".csv")
+                ),
+                
+                radioButtons(
+                    "seperator",
+                    label = 'Separator',
+                    choices = c(
+                        Comma = ',',
+                        Semicolon = ';',
+                        Tab = '\t',
+                        Space = ''
+                    ),
+                    selected = ','
+                ), 
                 fileInput(
                     "file2",
                     "Choose your folder with images",
@@ -84,15 +84,11 @@ shinyUI(fluidPage(
             #verbatimTextOutput("coor_range", placeholder = TRUE),
             
             br(),
-            actionButton(
-                inputId = "success",
-                label = "Launch a success sweet alert",
-                icon = icon("check")
-            ),
+
             br(),
             actionButton(
-                inputId = "error",
-                label = "Launch an error sweet alert",
+                inputId = "diagnose",
+                label = "Diagnose problems",
                 icon = icon("remove")
             ),
             br(),
@@ -148,10 +144,10 @@ shinyUI(fluidPage(
                 label = "Download Options",
                 icon = icon("download")
             ),
-           textInput("chd","Day seperator","d"),
-           textInput("chm","Minute seperator","'"),
-           textInput("chs","Second seperator","\""),
-           checkboxInput("dms", "DMS", F)
+            textInput("chd","Day seperator","d"),
+            textInput("chm","Minute seperator","'"),
+            textInput("chs","Second seperator","\""),
+            checkboxInput("dms", "DMS", F)
         ),
         
         # Show a plot of the generated distribution
