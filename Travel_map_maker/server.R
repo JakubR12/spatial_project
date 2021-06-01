@@ -1,119 +1,20 @@
-#
-# This is the server logic of a Shiny web application. You can run the
-# application by clicking 'Run App' above.
-#
-# Find out more about building applications with Shiny here:
-#
-#    http://shiny.rstudio.com/
-#
+library(shiny) # For running the app
+library(tidyverse) #for data wrangling
+library(shinyalert) #For error pop ups
+library(leaflet) #For making the map
+library(mapview) #for saving the map
+library(colourpicker) #For color selection in the app
+library(leafpop) #For image pop ups
+library(varhandle) #for checking numeric values
+library(sp) #For converting dms values to numeric
 
-library(shiny)
-library(leaflet)
-library(mapview)
-library(tidyverse)
-library(colourpicker)
-library(leafpop)
-library(shinyWidgets)
-library(colourpicker)
-library(varhandle)
-library(sp)
+source("utils.R") #sourcing custom functions
 
-alert <- function(title, text, type) {
-  shinyalert(
-    title = title,
-    text = text,
-    size = "s",
-    closeOnEsc = TRUE,
-    closeOnClickOutside = TRUE,
-    html = TRUE,
-    type = type,
-    showConfirmButton = TRUE,
-    showCancelButton = FALSE,
-    confirmButtonText = "OK",
-    confirmButtonCol = "#AEDEF4",
-    timer = 0,
-    imageUrl = "",
-    animation = TRUE
-  )
-}
+options(shiny.maxRequestSize = 30 * 1024 ^ 2)
 
-# EPSG 54042, SR-ORG:7291
-#
-addTitle = function(object,
-                    text,
-                    color = "black",
-                    fontSize = "20px",
-                    fontFamily = "Sans",
-                    leftPosition = 50,
-                    topPosition = 2) {
-  htmlwidgets::onRender(
-    object,
-    paste0(
-      "
-                                       function(el,x){
-                                       h1 = document.createElement('h1');
-                                       h1.innerHTML = '",
-      text ,
-      "';
-                                       h1.id='titleh1';
-                                       h1.style.color = '",
-      color ,
-      "';
-                                       h1.style.fontSize = '",
-      fontSize,
-      "';
-                                       h1.style.fontFamily='",
-      fontFamily,
-      "';
-                                       h1.style.position = 'fixed';
-                                       h1.style['-webkit-transform']='translateX(-50%)';
-                                       h1.style.left='",
-      leftPosition ,
-      "%';
-                                       h1.style.top='",
-      topPosition,
-      "%';
-                                       document.body.appendChild(h1);
-                                       }"
-    )
-  )
-  
-}
-
-
-error_check <- function(df) {
-  len = length(df[, 1])
-  if (!sum(c("lat", "long", "Description") %in% colnames(df)) == 3) {
-    alert(title = "Error !!",
-          text = "it seems that you have uchosen the wrong seperator. Try and check the box with the right seperator for your data",
-          type = "error")
-    
-  }
-  else if (!sum(check.numeric(df$long) + check.numeric(df$lat)) == len * 2) {
-    alert(title = "Error !!",
-          text = "not numeric",
-          type = "warning")
-  }
-  else if (!sum(df$long <= 90 & df$long >= -90) == len) {
-    alert(title = "Error !!",
-          text = "longitude error",
-          type = "error")
-  }
-  
-  else if (!sum(df$lat <= 180 & df$lat >= -180) == len) {
-    alert(title = "Error !!",
-          text = "latitude error",
-          type = "error")
-  }
-  else {
-    alert(title = "Success !!",
-          text = "All in order",
-          type = "success")
-  }
-}
-#options(shiny.maxRequestSize = 30 * 1024 ^ 2)
-# Define server logic required to draw a histogram
+#define server logic
 shinyServer(function(input, output) {
+  #the csv loader
   filedata <- reactive({
     infile <- input$file1
     if (is.null(infile)) {
@@ -121,66 +22,82 @@ shinyServer(function(input, output) {
     }
     
     if (input$dms == T) {
+      #read data
       df <-
-        read.csv(infile$datapath, sep = input$seperator) #infile$datapat
-      
-      if (is.null(df[, 2])) {
+        read.csv(infile$datapath, sep = input$seperator) 
+      #if it does not have the longitude columns, it can't convert the values
+      if (is.null(df$long)) {
         return(df)
       }
-      
+      #convert to numeric
       else if (is.numeric(df$lat) & is.numeric(df$lat)) {
         return(df)
       }
       else {
-        df %>% mutate(lat =
-                        as.numeric(char2dms(
-                          df$lat, input$chd, input$chm, input$chs
-                        )),
-                      long =
-                        as.numeric(char2dms(
-                          df$long, input$chd, input$chm, input$chs
-                        )))
-      }
-      return(df)
+        #parse dms and convert to decimal degrees
+        df = df %>% mutate(lat =
+                             as.numeric(char2dms(
+                               df$lat, input$chd, input$chm, input$chs
+                             )),
+                           long =
+                             as.numeric(char2dms(
+                               df$long, input$chd, input$chm, input$chs
+                             )))
+      } <
+        return(df)
     }
-      data <-
-        read.csv(infile$datapath, sep = input$seperator) #infile$datapath
-      return(data)
-
+    #just load data normally
+    data <-
+      read.csv(infile$datapath, sep = input$seperator) #infile$datapath
+    return(data)
+    
     
   })
+  #creating a reactive value for the customizable describtion column name
+  description <- reactive({
+    label <- input$description
+    if (is.null(label)) {
+      return("description")
+    }
+    else {
+      return(label)
+    }
+  })
   
-  
+  #Diagnose error button
   observeEvent(input$diagnose, {
     if (is.null(input$file1)) {
       return ()
     }
     df = filedata()
-    error_check(df)
+    label_col = description()
+    error_check(df, label_col)
   })
   
+  #Monitor for errors when uploading data
   observeEvent(input$file1, {
     if (is.null(input$file1)) {
       return ()
     }
     df = filedata()
-    error_check(df)
+    label_col = description()
+    error_check(df, label_col)
   })
   
+  #reactive value for approving the data format
   format_approved <- reactive ({
     if (is.null(input$file1)) {
       return ()
     }
-    
     df = filedata()
-    
     len = length(df[, 1])
+    label_col = description()
     
-    if (sum(c("lat", "long", "Description") %in% colnames(df)) == 3 &
+    if (sum(c("lat", "long", label_col) %in% colnames(df)) == 3 &
         sum(check.numeric(df$long) + check.numeric(df$lat)) == len * 2 &
-        sum(df$long <= 90 &
-            df$long >= -90) == len &
-        sum(df$lat <= 180 & df$lat >= -180) == len) {
+        sum(df$long <= 180 &
+            df$long >= -180) == len &
+        sum(df$lat <= 90 & df$lat >= -90) == len) {
       TRUE
     }
     
@@ -189,7 +106,7 @@ shinyServer(function(input, output) {
     }
   })
   
-  
+  #reactive value that can handle the relative file paths for the images
   merged_df <- reactive({
     if (is.null(input$file1)) {
       return ()
@@ -203,6 +120,7 @@ shinyServer(function(input, output) {
     df
   })
   
+  #The file structure output
   output$fileob <- renderPrint({
     if (is.null(input$file1)) {
       return ()
@@ -212,18 +130,7 @@ shinyServer(function(input, output) {
     
   })
   
-  image_info <- reactive({
-    if (is.null(input$file2)) {
-      return ()
-    }
-    if (is.null(input$file1)) {
-      return ()
-    }
-    df = filedata()
-    input$file2 %>%
-      rename(Image_name = name) %>%
-      merge(df, by = "Image_name")
-  })
+#creating interactive table for the data
   output$contents = renderDataTable({
     if (is.null(input$file1)) {
       return ()
@@ -232,21 +139,23 @@ shinyServer(function(input, output) {
     return(df)
   })
   
-  
-  
+  #reactivebject for the leaflet map
   main_map <- reactive({
-    df = merged_df()
-    
+    #call the dataframe with the full image paths
+    df <-  merged_df()
+    #initiate map
     start_map <- leaflet()
-    
+    #grab all esri tile layers
     esri <- grep("^Esri", providers, value = TRUE)
-    
+    #add esri tile layers
     for (provider in esri) {
       start_map <-
         start_map %>% addProviderTiles(provider,
                                        group = provider,
                                        options = providerTileOptions(noWrap = !input$wrap_map))
     }
+    
+    #use html code to format the title
     map_title <-
       paste(
         "<b style='color:",
@@ -254,14 +163,14 @@ shinyServer(function(input, output) {
         ";font-size:",
         input$title_size
         ,
-        "px;font-family:Comic Sans MS'>",
+        "px;font-family:Comic Sans MS'>", #Comic Sans FTW
         input$map_title
         ,
         "<b/>",
         sep = ""
       )
     
-    
+    #create the basic map without data
     plot <- start_map %>%
       
       addLayersControl(baseGroups = names(esri),
@@ -278,12 +187,20 @@ shinyServer(function(input, output) {
       ) %>%
       addControl(map_title, "bottomleft")
     
-    
+    #use base map if no data has been uploaded
     if (is.null(input$file1)) {
       return(plot)
     }
-    
+    #Use the map with markers if the data has been uploaded and approved
     if (req(format_approved()) == TRUE) {
+      label_col <-  description()
+      label_df <-  select_if(df, names(df) %in% label_col)
+      if (ncol(label_df) == 0) {
+        label_name <- NULL
+      } else{
+        label_name <- names(label_df)
+      }
+      
       icons <- makeAwesomeIcon(
         text = fa(input$icon),
         markerColor = input$markerColor,
@@ -297,31 +214,33 @@ shinyServer(function(input, output) {
           data = df,
           lng = df$long,
           lat = df$lat,
-          label = df$Description,
+          label = df[label_name][,1],
           icon = icons,
           group = "pnts",
           #clusterOptions = markerClusterOptions(),
           options = markerOptions(opacity = 0.8)
         )
     }
-    
+    #add images if imges has been uploaded
     if (!is.null(df) & !is.null(df$datapath)) {
       return(marker_plot %>%
                addPopupImages(df$datapath, "pnts", 150))
     }
+    #else return map just with markers
     else if (req(format_approved()) == TRUE) {
       return(marker_plot)
-    }
+    } #otherwise just return the base map
     else {
       return(plot)
     }
   })
-  
+  #render the map
   output$map <- leaflet::renderLeaflet({
     main_map()
     
   })
   
+  #reactive object for saving the state of the map
   mymap <- reactive({
     # call the foundational Leaflet map
     main_map() %>%
@@ -336,7 +255,7 @@ shinyServer(function(input, output) {
       showGroup(group = input$map_groups)
     
   })
-  
+  #download map as png saved as the state of the map
   output$downloadPlotPNG <- downloadHandler(
     filename = "data.png"
     ,
@@ -351,7 +270,7 @@ shinyServer(function(input, output) {
     }
     
   )
-  
+  #save html version of the map. The map should be self contained in the html to work wethink...
   output$downloadPlotHTML <- downloadHandler(
     filename = paste0(getwd(), "/map.html")
     ,
@@ -359,7 +278,6 @@ shinyServer(function(input, output) {
     content = function(file) {
       mapshot(
         x = mymap(),
-        #file = file,
         cliprect = "viewport",
         selfcontained = T,
         url = file
