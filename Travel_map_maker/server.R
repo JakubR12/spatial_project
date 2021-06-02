@@ -209,7 +209,11 @@ shinyServer(function(input, output) {
         spin = input$icon_spin,
         squareMarker = input$square_markers
       )
-      html_labels <- lapply(df[label_name][, 1],htmltools::HTML)
+      
+      if(input$html == T){html_labels <- lapply(df[label_name][, 1],htmltools::HTML)}
+      else{html_labels <- df[label_name][, 1] }
+      
+      
       marker_plot <- plot %>%
         addAwesomeMarkers(
           data = df,

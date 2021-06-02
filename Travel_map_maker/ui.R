@@ -120,6 +120,7 @@ shinyUI(fluidPage(
                 checkboxInput("icon_spin", "Spinning icons", F),
                 label = "Marker Options",
                 icon = icon("thumbtack"),
+                checkboxInput("html", "Render Labels as HTML", F),
                 circle = FALSE
             ),
             br(),
