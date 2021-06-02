@@ -1,12 +1,3 @@
-#
-# This is the user-interface definition of a Shiny web application. You can
-# run the application by clicking 'Run App' above.
-#
-# Find out more about building applications with Shiny here:
-#
-#    http://shiny.rstudio.com/
-#
-
 library(shiny) #for running the app
 library(leaflet) #for making the map
 library(fontawesome) #for awesome fonts
@@ -94,13 +85,13 @@ shinyUI(fluidPage(
                 circle = FALSE,
                 label = "DMS Conversion Options"
             ),
-            br(),
             #button to activat the error_check function
             actionButton(
                 inputId = "diagnose",
                 label = "Diagnose problems",
                 icon = icon("remove")
             ),
+            br(),
             br(),
             # Icons in dorpdown menu
             dropdownButton(
@@ -120,10 +111,9 @@ shinyUI(fluidPage(
                 checkboxInput("icon_spin", "Spinning icons", F),
                 label = "Marker Options",
                 icon = icon("thumbtack"),
-                checkboxInput("html", "Render Labels as HTML", F),
+                checkboxInput("html", "Render Labels as HTML", T),
                 circle = FALSE
             ),
-            br(),
             #title editiing in dropdown menu
             dropdownButton(
                 textAreaInput("map_title", "Map title"),

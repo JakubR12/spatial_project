@@ -7,6 +7,7 @@ library(colourpicker) #For color selection in the app
 library(leafpop) #For image pop ups
 library(varhandle) #for checking numeric values
 library(sp) #For converting dms values to numeric
+library(htmltools) #For rnedering labels as html
 
 source("utils.R") #sourcing custom functions
 
@@ -209,11 +210,11 @@ shinyServer(function(input, output) {
         spin = input$icon_spin,
         squareMarker = input$square_markers
       )
-      
-      if(input$html == T){html_labels <- lapply(df[label_name][, 1],htmltools::HTML)}
+      #render labels with html
+      if(input$html == T){html_labels <- lapply(df[label_name][, 1],HTML)}
       else{html_labels <- df[label_name][, 1] }
       
-      
+      #add markers to plot
       marker_plot <- plot %>%
         addAwesomeMarkers(
           data = df,
