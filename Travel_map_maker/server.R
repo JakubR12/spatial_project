@@ -24,7 +24,7 @@ shinyServer(function(input, output) {
     if (input$dms == T) {
       #read data
       df <-
-        read.csv(infile$datapath, sep = input$seperator) 
+        read.csv(infile$datapath, sep = input$seperator)
       #if it does not have the longitude columns, it can't convert the values
       if (is.null(df$long)) {
         return(df)
@@ -123,14 +123,14 @@ shinyServer(function(input, output) {
   #The file structure output
   output$fileob <- renderPrint({
     if (is.null(input$file1)) {
-      return ()
+      return ("No data has been uploaded yet")
     }
     df = filedata()
     str(df)
     
   })
   
-#creating interactive table for the data
+  #creating interactive table for the data
   output$contents = renderDataTable({
     if (is.null(input$file1)) {
       return ()
@@ -163,7 +163,8 @@ shinyServer(function(input, output) {
         ";font-size:",
         input$title_size
         ,
-        "px;font-family:Comic Sans MS'>", #Comic Sans FTW
+        "px;font-family:Comic Sans MS'>",
+        #Comic Sans FTW
         input$map_title
         ,
         "<b/>",
@@ -208,13 +209,13 @@ shinyServer(function(input, output) {
         spin = input$icon_spin,
         squareMarker = input$square_markers
       )
-      
+      html_labels <- lapply(df[label_name][, 1],htmltools::HTML)
       marker_plot <- plot %>%
         addAwesomeMarkers(
           data = df,
           lng = df$long,
           lat = df$lat,
-          label = df[label_name][,1],
+          label = html_labels,
           icon = icons,
           group = "pnts",
           #clusterOptions = markerClusterOptions(),
@@ -237,9 +238,7 @@ shinyServer(function(input, output) {
   #render the map
   output$map <- leaflet::renderLeaflet({
     main_map()
-    
   })
-  
   #reactive object for saving the state of the map
   mymap <- reactive({
     # call the foundational Leaflet map
@@ -285,11 +284,4 @@ shinyServer(function(input, output) {
     }
     
   )
-  renderPrint({
-    if (is.null(df)) {
-      return ()
-    }
-    df$Image_name
-  })
-  
 })
