@@ -211,8 +211,12 @@ shinyServer(function(input, output) {
         squareMarker = input$square_markers
       )
       #render labels with html
-      if(input$html == T){html_labels <- lapply(df[label_name][, 1],HTML)}
-      else{html_labels <- df[label_name][, 1] }
+      if (input$html == T) {
+        html_labels <- lapply(df[label_name][, 1], HTML)
+      }
+      else{
+        html_labels <- df[label_name][, 1]
+      }
       
       #add markers to plot
       marker_plot <- plot %>%
@@ -272,13 +276,11 @@ shinyServer(function(input, output) {
         selfcontained = T
       )
     }
-    
   )
   #save html version of the map. The map should be self contained in the html to work wethink...
   output$downloadPlotHTML <- downloadHandler(
     filename = paste0(getwd(), "/map.html")
     ,
-    
     content = function(file) {
       mapshot(
         x = mymap(),
@@ -287,6 +289,5 @@ shinyServer(function(input, output) {
         url = file
       )
     }
-    
   )
 })

@@ -31,7 +31,8 @@ markerColors = c(
 )
 
 # Define UI
-shinyUI(fluidPage(
+shinyUI(
+    fluidPage(
     useShinyalert(),
     #set theme
     theme = shinytheme("readable"),
