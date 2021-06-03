@@ -51,8 +51,6 @@ shinyServer(function(input, output) {
     data <-
       read.csv(infile$datapath, sep = input$seperator) #infile$datapath
     return(data)
-    
-    
   })
   #creating a reactive value for the customizable describtion column name
   description <- reactive({
@@ -232,7 +230,7 @@ shinyServer(function(input, output) {
         )
     }
     #add images if imges has been uploaded
-    if (!is.null(df) & !is.null(df$datapath)) {
+    if (req(format_approved()) == TRUE & !is.null(df) & !is.null(df$datapath)) {
       return(marker_plot %>%
                addPopupImages(df$datapath, "pnts", 150))
     }

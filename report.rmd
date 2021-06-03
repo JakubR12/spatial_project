@@ -1,0 +1,16 @@
+---
+title: "Untitled"
+author: "Peter Thramkrongart & Jakub Raszka"
+date: "3/6/2021"
+
+bibliography: biblio.bib
+---
+
+
+## 5 Implementation
+
+Our project is based on two core libraries: _shiny_ and _leaflet_. Both are tools that are fairly easy to implement for R-novices and both provide powerful and robust functionality. Shiny is an R-based tool for building interactive web-applications. Its main strength is that it is controlled by the R Programming language. This means that all our code can be written in a couple of R-scripts. Similarly, _Leaflet_ allows us to create interactive maps with a few lines of R code. In both cases, interactivity is key: Users need an interactive web-app to intuitively be able to create informative and good maps without too much expertise. In terms of novice map making, we find interactivity that interactivity enhances the user experience dramatically. Using the _web mercator_ projection allows user to plot point data from all over the world at the same time, and the interactivity allows multiple levels of granularity and detail. For a travel map, user may plot multiple points in the cities they visits, and the may plot cities on multiple continents. We, therefore, find that leaflet provides the most functionality relevant to novices in a way that is very easy to use. If needed, novice R-user will easily be able to adopt the code we used for mapping for other projects. If, were to make static maps instead, _ggplot2_ + _ggmap_ [@kahle_ggmap_2013; @wickham_ggplot2_2016] and _tmap_ [@tennekes_tmap_2018] would have been great candidates. Both have use easy to learn syntax, and both are very powerful. Tmap actually, uses Leaflet for its interactive mapping functionality. So does, the begginer-friendly _mapview_ package[@appelhans_mapview_2020]. We, therefore, chose go to closer to the source and use the leaflet R-package.
+
+
+
+## References
