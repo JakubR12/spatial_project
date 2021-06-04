@@ -27,15 +27,16 @@ alert <- function(title, text, type) {
     animation = TRUE
   )
 }
-
-# EPSG 54042, SR-ORG:7291
+1
 
 error_check <- function(df, label_col) {
+  #This function checks that the data is in right format
+  
   len = length(df[, 1])
   
   if (!sum(c("lat", "long") %in% colnames(df)) == 2) {
     alert(title = "Separator Error !!",
-          text = "It seems that you have chosen a wrong seperator. You see can the dataset below the map and choose a corresponding separator.",
+          text = "You don't seem to have to have coordinates in columns called 'lat' and 'long'. You may have chosen a wrong seperator. You can see your data set below the map and choose the right separator.",
           type = "error")
     
   }

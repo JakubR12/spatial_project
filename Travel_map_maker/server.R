@@ -27,7 +27,7 @@ shinyServer(function(input, output) {
       df <-
         read.csv(infile$datapath, sep = input$seperator)
       #if it does not have the longitude columns, it can't convert the values
-      if (is.null(df$long)) {
+      if (is.null(df$long)|is.null(df$lat)) {
         return(df)
       }
       #convert to numeric
@@ -53,15 +53,15 @@ shinyServer(function(input, output) {
     return(data)
   })
   #creating a reactive value for the customizable describtion column name
-  description <- reactive({
-    label <- input$description
-    if (is.null(label)) {
-      return("description")
-    }
-    else {
-      return(label)
-    }
-  })
+  # description <- reactive({
+  #   label <- input$description
+  #   if (is.null(label)) {
+  #     return("description")
+  #   }
+  #   else {
+  #     return(label)
+  #   }
+  # })
   
   #Diagnose error button
   observeEvent(input$diagnose, {
@@ -69,8 +69,8 @@ shinyServer(function(input, output) {
       return ()
     }
     df = filedata()
-    label_col = description()
-    error_check(df, label_col)
+    #label_col = description()
+    error_check(df, input$description)
   })
   
   #Monitor for errors when uploading data
@@ -79,8 +79,8 @@ shinyServer(function(input, output) {
       return ()
     }
     df = filedata()
-    label_col = description()
-    error_check(df, label_col)
+    #label_col = description()
+    error_check(df, input$description)
   })
   
   #reactive value for approving the data format
@@ -90,16 +90,14 @@ shinyServer(function(input, output) {
     }
     df = filedata()
     len = length(df[, 1])
-    label_col = description()
-    
-    if (sum(c("lat", "long", label_col) %in% colnames(df)) == 3 &
+    #format requirements
+    if (sum(c("lat", "long", input$description) %in% colnames(df)) == 3 &
         sum(check.numeric(df$long) + check.numeric(df$lat)) == len * 2 &
         sum(df$long <= 180 &
             df$long >= -180) == len &
         sum(df$lat <= 90 & df$lat >= -90) == len) {
       TRUE
     }
-    
     else {
       FALSE
     }
@@ -110,7 +108,7 @@ shinyServer(function(input, output) {
     if (is.null(input$file1)) {
       return ()
     }
-    df = filedata()
+    df = filedata() #fetch data
     if (!is.null(input$file2)) {
       df = input$file2 %>%
         rename(Image_name = name) %>%
@@ -172,12 +170,14 @@ shinyServer(function(input, output) {
     
     #create the basic map without data
     plot <- start_map %>%
-      
+      #add layer selector
       addLayersControl(baseGroups = names(esri),
                        options = layersControlOptions(collapsed = T))  %>%
+      #add minimap
       addMiniMap(tiles = esri[[1]],
                  toggleDisplay = TRUE,
                  position = "bottomright") %>%
+      #add measuring tool
       addMeasure(
         position = "bottomright",
         primaryLengthUnit = "meters",
@@ -185,6 +185,7 @@ shinyServer(function(input, output) {
         activeColor = "#3D535D",
         completedColor = "#7D4479"
       ) %>%
+      #add title
       addControl(map_title, "bottomleft")
     
     #use base map if no data has been uploaded
@@ -192,14 +193,9 @@ shinyServer(function(input, output) {
       return(plot)
     }
     #Use the map with markers if the data has been uploaded and approved
+    # if the format has been approved:
     if (req(format_approved()) == TRUE) {
-      label_col <-  description()
-      label_df <-  select_if(df, names(df) %in% label_col)
-      if (ncol(label_df) == 0) {
-        label_name <- NULL
-      } else{
-        label_name <- names(label_df)
-      }
+       #name of the label column
       
       icons <- makeAwesomeIcon(
         text = fa(input$icon),
@@ -210,10 +206,10 @@ shinyServer(function(input, output) {
       )
       #render labels with html
       if (input$html == T) {
-        html_labels <- lapply(df[label_name][, 1], HTML)
+        html_labels <- lapply(df[input$description][, 1], HTML)
       }
       else{
-        html_labels <- df[label_name][, 1]
+        html_labels <- df[input$description][, 1]
       }
       
       #add markers to plot
