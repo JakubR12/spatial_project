@@ -57,7 +57,7 @@ error_check <- function(df, label_col) {
   }
   else if (ncol(select_if(df, names(df) %in% label_col)) != 1) {
     alert(title = "Label Error !!",
-          text = "It seems that your column name for labellin/describing locations does not correspond to the default: Description. You can change it in the Upload options in the Label name box.",
+          text = "It seems that your column name for labelling/describing locations does not correspond to the default: Description. You can change it in the Upload options in the Label name box.",
           type = "error")
   }
   else {
