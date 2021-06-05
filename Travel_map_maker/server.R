@@ -192,7 +192,7 @@ shinyServer(function(input, output) {
     if (is.null(input$file1)) {
       return(plot)
     }
-    #Use the map with markers if the data has been uploaded and approved
+    #Create the map with markers if the data has been uploaded and approved
     # if the format has been approved:
     if (req(format_approved()) == TRUE) {
        #name of the label column
@@ -248,10 +248,8 @@ shinyServer(function(input, output) {
     main_map() %>%
       # store the view based on UI
       setView(
-        lng = input$map_center$lng
-        ,
-        lat = input$map_center$lat
-        ,
+        lng = input$map_center$lng,
+        lat = input$map_center$lat,
         zoom = input$map_zoom
       ) %>%
       showGroup(group = input$map_groups)
@@ -259,9 +257,7 @@ shinyServer(function(input, output) {
   })
   #download map as png saved as the state of the map
   output$downloadPlotPNG <- downloadHandler(
-    filename = "data.png"
-    ,
-    
+    filename = "data.png",
     content = function(file) {
       mapshot(
         x = mymap(),
@@ -273,8 +269,7 @@ shinyServer(function(input, output) {
   )
   #save html version of the map. The map should be self contained in the html to work wethink...
   output$downloadPlotHTML <- downloadHandler(
-    filename = paste0(getwd(), "/map.html")
-    ,
+    filename = paste0(getwd(), "/map.html"),
     content = function(file) {
       mapshot(
         x = mymap(),

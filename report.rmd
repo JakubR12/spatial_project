@@ -1,7 +1,10 @@
 ---
 title: "Untitled"
 author: "Peter Thramkrongart & Jakub Raszka"
-date: "3/6/2021"
+date: "10/6/2021"
+output: 
+  word_document:
+    reference_docx: StylesTemplate.docx
 bibliography: biblio.bib
 ---
 
@@ -115,12 +118,12 @@ plot <- start_map %>%
 
 ```
 
-To avoid crashing the app by attempting to define a map with bad coordinates or something similar, we have implemented a logic switching system that only maps coordinates when they have been approved and only attempts to add images when they have been uploaded. The logic follows the fowchart below:
+To avoid crashing the app by attempting to define a map with bad coordinates or something similar, we have implemented a logic switching system that only maps coordinates when they have been approved and only attempts to add images when they have been uploaded. The logic follows the flowchart below:
 
 
 ![Flowchart of the mapping logic](Mapping_flowchart.png)
 
-
+Below is the code for the function we use to approve the data format:
 ```{r, eval = F}
   #reactive value for approving the data format
   format_approved <- reactive ({
@@ -141,6 +144,110 @@ To avoid crashing the app by attempting to define a map with bad coordinates or 
       FALSE
     }
   })
+
+```
+
+If the data has been approved, we can start defining the map with the markers. We use functions that stem from then *awesome-markers* Leaflet plugin [@voogdt_leafletawesome-markers_2014]. They make have extended functionality compared to the normal markers, and they make it easy to implement custom icons. The markers and their icons are defined according to e custom settings of the user controlled in the UI. To allow users to format the labels of the markers, users can choose to parse their labels as HTML.
+Ideally, we would want to find be able to cluster the points close to each other, but clustering breaks our system for showing popup images. To streamline the project and avoid user confusion, we chose not to cluster point, even when no images have been uploaded.
+Below is the code for defining the map with the markers:
+```{r, eval = F}
+
+
+#Create the map with markers if the data has been uploaded and approved
+# if the format has been approved:
+if (req(format_approved()) == TRUE) {
+  #name of the label column
+  
+  icons <- makeAwesomeIcon(
+    text = fa(input$icon),
+    markerColor = input$markerColor,
+    iconColor = input$icon_color,
+    spin = input$icon_spin,
+    squareMarker = input$square_markers
+  )
+  #render labels with html
+  if (input$html == T) {
+    html_labels <- lapply(df[input$description][, 1], HTML)
+  }
+  else{
+    html_labels <- df[input$description][, 1]
+  }
+  
+  #add markers to plot
+  marker_plot <- plot %>%
+    addAwesomeMarkers(
+      data = df,
+      lng = df$long,
+      lat = df$lat,
+      label = html_labels,
+      icon = icons,
+      group = "pnts",
+      #clusterOptions = markerClusterOptions(),
+      options = markerOptions(opacity = 0.8)
+    )
+}
+
+```
+
+Because we created the map with the markers before, the code for defining the map with images and choosing the right map. If the conditions are met, we add images to plot with markers and show that, else if only the data has been approved, we show the map only with markers, else we show the bare map without markers. Below is the code for deploying the right map:
+
+```{r, eval = F}
+    #add images if imges has been uploaded
+    if (req(format_approved()) == TRUE & !is.null(df) & !is.null(df$datapath)) {
+      return(marker_plot %>%
+               addPopupImages(df$datapath, "pnts", 150))
+    }
+    #else return map just with markers
+    else if (req(format_approved()) == TRUE) {
+      return(marker_plot)
+    } #otherwise just return the base map
+    else {
+      return(plot)
+    }
+```
+
+If the user choose to export the map, we use the *mapshot()* function from the *mapview* package [@appelhans_mapview_2020] to capture the state of the map and save it in the chosen format. The user can either save it as a PNG still image or selfcontained interactive HTML file. There are limits to how much can be stored in the self-contained HTML file, so we restict the image size to be 150 pixels wide. There are still limits to how many images the HTML can handle, but we have not found it. If the problem should arise, the user can still export the map without the images, and just use the markers.
+Below is our code for exporting the map:
+
+
+```{r, eval = F}
+#reactive object for saving the state of the map
+mymap <- reactive({
+  # call the foundational Leaflet map
+  main_map() %>%
+    # store the view based on UI
+    setView(
+      lng = input$map_center$lng,
+      lat = input$map_center$lat,
+      zoom = input$map_zoom
+    ) %>%
+    showGroup(group = input$map_groups)
+  
+})
+#download map as png saved as the state of the map
+output$downloadPlotPNG <- downloadHandler(
+  filename = "data.png",
+  content = function(file) {
+    mapshot(
+      x = mymap(),
+      file = file,
+      cliprect = "viewport",
+      selfcontained = T
+    )
+  }
+)
+#save html version of the map. The map should be self contained in the html to work wethink...
+output$downloadPlotHTML <- downloadHandler(
+  filename = paste0(getwd(), "/map.html"),
+  content = function(file) {
+    mapshot(
+      x = mymap(),
+      cliprect = "viewport",
+      selfcontained = T,
+      url = file
+    )
+  }
+)
 
 ```
 

@@ -474,11 +474,116 @@ plot &lt;- start_map %&gt;%
   ) %&gt;%
   #add title
   addControl(map_title, &quot;bottomleft&quot;)</code></pre>
-<p>To avoid crashing the app by attempting to define a map with bad coordinates or something similar, we have implemented a logic switching system that only maps coordinates when they have been approved and only attempts to add images when they have been uploaded. The logic follows the fowchart below:</p>
+<p>To avoid crashing the app by attempting to define a map with bad coordinates or something similar, we have implemented a logic switching system that only maps coordinates when they have been approved and only attempts to add images when they have been uploaded. The logic follows the flowchart below:</p>
 <div class="figure">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAu8AAAFVCAYAAABfOgHfAAAEtnRFWHRteGZpbGUAJTNDbXhmaWxlJTIwaG9zdCUzRCUyMmFwcC5kaWFncmFtcy5uZXQlMjIlMjBtb2RpZmllZCUzRCUyMjIwMjEtMDYtMDRUMTIlM0E1OSUzQTM2LjMyNFolMjIlMjBhZ2VudCUzRCUyMjUuMCUyMChXaW5kb3dzKSUyMiUyMGV0YWclM0QlMjJBODIwNlN5aFVIMmw1MWhHVkg1VSUyMiUyMHZlcnNpb24lM0QlMjIxNC43LjYlMjIlMjB0eXBlJTNEJTIyZGV2aWNlJTIyJTNFJTNDZGlhZ3JhbSUyMGlkJTNEJTIyYVZ0bV8wa1RzejhKWVk3NG10U3klMjIlMjBuYW1lJTNEJTIyUGFnZS0xJTIyJTNFNVZoZGs1b3dGUDAxUEpZQlF2aDRkZFU2MiUyQjZUTzlQSFRwUmJvQVhDaE9CSGYzMkRKQktNZGUxMDE3SGJQRWh5Y2hOdXpqMzNSclhRUTduN3lFaWRQZEVFQ3N0emtwMkZwcGJudVY3a2lFZUg3SHNrQ1AwZVNGbWVTS01CV09ZJTJGUVlKeVhkcm1DVFFqUTA1cHdmTjZESzVwVmNHYWp6RENHTjJPemI3Ull2eldtcVJnQU1zMUtVejBTNTd3ckVjajdBejRBdkkwVTI5MkhUbFRFbVVzZ1NZakNkMXFFSnBaNklGUnl2dGV1WHVBb2lOUDhkS3ZtJTJGOW05dWdZZzRwZnN5QXBvNTB6OCUyRkxIcjNVTXo0dzhmcUxvZ3h2MTIyeEkwY29UUzIlMkY1WGxHUU10clc1dHVrQXh0Z0hIYm5Za0ZXYW9maHVFSW5RRXZnYkMlMkZzNUNwZkVyUWZEN2NEM2FHaU85T29Sc3FReUJDbng1MEhGa1JIRXZFSHBIZ0dKd3V5Z1U3RWhCT3JPODJrMjZJVXNXOUVad1ZRaVVkYkY1UWtrSFFlVllmUHVtWjBJd0EwTnpobEdTMVhyWEI4c3MxeURzdWFyTHVaclVnaWdXVzhGQTVQWGRFMWViOGN4OU5vbUt4cnZIck9HVjZQNEt2ekdocThQb25qZGg0Smg3cU1ZVCUyQkFOVWYlMkJGTUVuMU4yY01EV0w3RWh2TVJySjFzUFkwSzBiQkhhZ3RkQmtPOEp2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" alt />
 <p class="caption">Flowchart of the mapping logic</p>
 </div>
+<p>Below is the code for the function we use to approve the data format:</p>
+<pre class="r"><code>  #reactive value for approving the data format
+  format_approved &lt;- reactive ({
+    if (is.null(input$file1)) {
+      return ()
+    }
+    df = filedata()
+    len = length(df[, 1])
+    #format requirements
+    if (sum(c(&quot;lat&quot;, &quot;long&quot;, input$description) %in% colnames(df)) == 3 &amp;
+        sum(check.numeric(df$long) + check.numeric(df$lat)) == len * 2 &amp;
+        sum(df$long &lt;= 180 &amp;
+            df$long &gt;= -180) == len &amp;
+        sum(df$lat &lt;= 90 &amp; df$lat &gt;= -90) == len) {
+      TRUE
+    }
+    else {
+      FALSE
+    }
+  })</code></pre>
+<p>If the data has been approved, we can start defining the map with the markers. We use functions that stem from then <em>awesome-markers</em> Leaflet plugin <span class="citation">(Voogdt 2014)</span>. They make have extended functionality compared to the normal markers, and they make it easy to implement custom icons. The markers and their icons are defined according to e custom settings of the user controlled in the UI. To allow users to format the labels of the markers, users can choose to parse their labels as HTML. Ideally, we would want to find be able to cluster the points close to each other, but clustering breaks our system for showing popup images. To streamline the project and avoid user confusion, we chose not to cluster point, even when no images have been uploaded. Below is the code for defining the map with the markers:</p>
+<pre class="r"><code>#Create the map with markers if the data has been uploaded and approved
+# if the format has been approved:
+if (req(format_approved()) == TRUE) {
+  #name of the label column
+  
+  icons &lt;- makeAwesomeIcon(
+    text = fa(input$icon),
+    markerColor = input$markerColor,
+    iconColor = input$icon_color,
+    spin = input$icon_spin,
+    squareMarker = input$square_markers
+  )
+  #render labels with html
+  if (input$html == T) {
+    html_labels &lt;- lapply(df[input$description][, 1], HTML)
+  }
+  else{
+    html_labels &lt;- df[input$description][, 1]
+  }
+  
+  #add markers to plot
+  marker_plot &lt;- plot %&gt;%
+    addAwesomeMarkers(
+      data = df,
+      lng = df$long,
+      lat = df$lat,
+      label = html_labels,
+      icon = icons,
+      group = &quot;pnts&quot;,
+      #clusterOptions = markerClusterOptions(),
+      options = markerOptions(opacity = 0.8)
+    )
+}</code></pre>
+<p>Because we created the map with the markers before, the code for defining the map with images and choosing the right map. If the conditions are met, we add images to plot with markers and show that, else if only the data has been approved, we show the map only with markers, else we show the bare map without markers. Below is the code for deploying the right map:</p>
+<pre class="r"><code>    #add images if imges has been uploaded
+    if (req(format_approved()) == TRUE &amp; !is.null(df) &amp; !is.null(df$datapath)) {
+      return(marker_plot %&gt;%
+               addPopupImages(df$datapath, &quot;pnts&quot;, 150))
+    }
+    #else return map just with markers
+    else if (req(format_approved()) == TRUE) {
+      return(marker_plot)
+    } #otherwise just return the base map
+    else {
+      return(plot)
+    }</code></pre>
+<p>If the user choose to export the map, we use the <em>mapshot()</em> function from the <em>mapview</em> package <span class="citation">(Appelhans et al. 2020)</span> to capture the state of the map and save it in the chosen format. The user can either save it as a PNG still image or selfcontained interactive HTML file. There are limits to how much can be stored in the self-contained HTML file, so we restict the image size to be 150 pixels wide. There are still limits to how many images the HTML can handle, but we have not found it. If the problem should arise, the user can still export the map without the images, and just use the markers. Below is our code for exporting the map:</p>
+<pre class="r"><code>#reactive object for saving the state of the map
+mymap &lt;- reactive({
+  # call the foundational Leaflet map
+  main_map() %&gt;%
+    # store the view based on UI
+    setView(
+      lng = input$map_center$lng,
+      lat = input$map_center$lat,
+      zoom = input$map_zoom
+    ) %&gt;%
+    showGroup(group = input$map_groups)
+  
+})
+#download map as png saved as the state of the map
+output$downloadPlotPNG &lt;- downloadHandler(
+  filename = &quot;data.png&quot;,
+  content = function(file) {
+    mapshot(
+      x = mymap(),
+      file = file,
+      cliprect = &quot;viewport&quot;,
+      selfcontained = T
+    )
+  }
+)
+#save html version of the map. The map should be self contained in the html to work wethink...
+output$downloadPlotHTML &lt;- downloadHandler(
+  filename = paste0(getwd(), &quot;/map.html&quot;),
+  content = function(file) {
+    mapshot(
+      x = mymap(),
+      cliprect = &quot;viewport&quot;,
+      selfcontained = T,
+      url = file
+    )
+  }
+)</code></pre>
 </div>
 <div id="references" class="section level2 unnumbered">
 <h2>References</h2>
@@ -491,6 +596,9 @@ plot &lt;- start_map %&gt;%
 </div>
 <div id="ref-tennekes_tmap_2018">
 <p>Tennekes, Martijn. 2018. “Tmap: Thematic Maps in R.” <em>Journal of Statistical Software</em> 84 (6): 1–39. <a href="https://doi.org/10.18637/jss.v084.i06">https://doi.org/10.18637/jss.v084.i06</a>.</p>
+</div>
+<div id="ref-voogdt_leafletawesome-markers_2014">
+<p>Voogdt, lennard. 2014. <em>Leaflet.Awesome-Markers</em>. <a href="https://github.com/lennardv2/Leaflet.awesome-markers">https://github.com/lennardv2/Leaflet.awesome-markers</a>.</p>
 </div>
 <div id="ref-wickham_ggplot2_2016">
 <p>Wickham, Hadley. 2016. <em>Ggplot2: Elegant Graphics for Data Analysis</em>. Springer-Verlag New York. <a href="https://ggplot2.tidyverse.org">https://ggplot2.tidyverse.org</a>.</p>
