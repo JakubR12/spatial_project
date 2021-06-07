@@ -1,0 +1,2 @@
+lat,long,Description,Image_name
+41d54'N,12d30'E,"""Center of Rome""",

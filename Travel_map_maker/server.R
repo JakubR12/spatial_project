@@ -52,16 +52,7 @@ shinyServer(function(input, output) {
       read.csv(infile$datapath, sep = input$seperator) #infile$datapath
     return(data)
   })
-  #creating a reactive value for the customizable describtion column name
-  # description <- reactive({
-  #   label <- input$description
-  #   if (is.null(label)) {
-  #     return("description")
-  #   }
-  #   else {
-  #     return(label)
-  #   }
-  # })
+
   
   #Diagnose error button
   observeEvent(input$diagnose, {
