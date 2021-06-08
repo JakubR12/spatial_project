@@ -7,7 +7,7 @@ library(colourpicker) #For color selection in the app
 library(leafpop) #For image pop ups
 library(varhandle) #for checking numeric values
 library(sp) #For converting dms values to numeric
-library(htmltools) #For rnedering labels as html
+library(htmltools) #For renddering labels as html
 
 source("utils.R") #sourcing custom functions
 
