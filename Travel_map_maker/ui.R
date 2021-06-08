@@ -42,7 +42,7 @@ shinyUI(
     # layout
     sidebarLayout(
         sidebarPanel(
-            "Welcome to the traval map maker tool! This tool lets you create and customize interactive maps of whre you have traveled and lets you share the result with your friends and family.",
+            "Welcome to the Travel Map Maker! This tool lets you create and customize interactive maps of where you have traveled. You can share the result with your friends and family.",
             #wrap some upload stuff in a drowpdown menu
             dropdownButton(
                 fileInput(
@@ -82,14 +82,14 @@ shinyUI(
                 textInput("chd", "Day seperator", "d"),
                 textInput("chm", "Minute seperator", "'"),
                 textInput("chs", "Second seperator", "\""),
-                checkboxInput("dms", "DMS", F),
+                checkboxInput("dms", "Convert DMS coordinates to DD", F),
                 circle = FALSE,
                 label = "DMS Conversion Options"
             ),
             #button to activat the error_check function
             actionButton(
                 inputId = "diagnose",
-                label = "Diagnose problems",
+                label = "Diagnose Errors",
                 icon = icon("remove")
             ),
             br(),
@@ -109,7 +109,7 @@ shinyUI(
                     selected = "map-pin"
                 ),
                 colourInput("icon_color", "Select icon_colour", "white"),
-                checkboxInput("icon_spin", "Spinning icons", F),
+                checkboxInput("icon_spin", "Spin icons", F),
                 label = "Marker Options",
                 icon = icon("thumbtack"),
                 checkboxInput("html", "Render Labels as HTML", T),

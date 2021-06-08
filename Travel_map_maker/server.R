@@ -11,6 +11,9 @@ library(htmltools) #For rnedering labels as html
 
 source("utils.R") #sourcing custom functions
 
+#install phantomjs if not already installed.
+if (!webshot::is_phantomjs_installed()){webshot::install_phantomjs()}
+
 options(shiny.maxRequestSize = 30 * 1024 ^ 2)
 
 #define server logic
