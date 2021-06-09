@@ -9,6 +9,15 @@ This is repository for our exam project for the Spatial analytics 2021
 course for Cultural Data Science 2020/2021 electoral program at Aarhus
 University
 
+### Contact
+
+You can get in touch with us on these emails:
+<peter.thramkrongart@gmail.com> or <kuba.raszka12@gmail.com>
+
+### License
+
+Distributed under the MIT License. See `LICENSE` for more information.
+
 ### Welcome\!
 
 Firstly, we are glad that you decided to give a shot to our map-maker
