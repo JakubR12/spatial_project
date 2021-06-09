@@ -3,13 +3,13 @@ Travel Map Maker
 Peter Thramkrongart & Jakub Raszka
 10/6/2021
 
-**Cultural Data Science and Spatial Analytics**
+## Cultural Data Science and Spatial Analytics
 
 This is repository for our exam project for the Spatial analytics 2021
 course for Cultural Data Science 2020/2021 electoral program at Aarhus
 University
 
-**Welcome\!**
+### Welcome\!
 
 Firstly, we are glad that you decided to give a shot to our map-maker
 tool to create some nice and flashy travel maps. This tutorial aims to
@@ -25,7 +25,7 @@ dataset compatible with our app without any spatial or programming
 knowledge. There are many and more ways how to create make one but we
 will focus primarily on using Wikipedia/Geohack, and Open Street Map.
 
-**Geographic coordinate system (GCS)**
+### Geographic coordinate system (GCS)
 
 A geographic coordinate system (GCS), also a datum, is a system for
 assigning a unique value to every single point of the Earth’s surface.
@@ -63,7 +63,7 @@ degrees, 43 minutes and 44 seconds in the northern hemisphere, and 90°
 degrees, 23 minutes, 40 seconds in the east globe. In the DD format, the
 coordinates are 23.728889, 90.394444.
 
-**Projected coordinate system**
+### Projected coordinate system
 
 If we want to move from pure 3D models and pure geographic coordinates
 to maps, we need a way to convert a 3D model to a flat map. That’s where
@@ -103,7 +103,7 @@ Web Mercator and its latitude limit that it is good to know what
 projection one is working with. Now, equipped with some knowledge, we
 can move to gather your data.
 
-**How to create the Data**
+### How to create the Data
 
 Open an editor of your choice which is suitable for text and numeric
 input and can output the file with .txt or .csv extension (Excel,
@@ -126,8 +126,9 @@ the app render you labels as HTML check the “Render Labels as HTML”
 checkbox in the “Markers” dropdown menu. In any case, we recommend that
 you wrap your texts in triple quotes `"""text"""` to allow for the most
 freedom when writing them. This avoids most problems with separators and
-so on. For more HTML options, we refer to the following sources: Leaflet
-tutorial and W3school.
+so on. For more HTML options, we refer to the following sources:
+[Leaflet tutorial](https://rstudio.github.io/leaflet/popups.html) and
+[W3school](https://www.w3schools.com/html/html_formatting.asp).
 
 Every location needs to be in a separate row. Once you have a list of
 places in the column with a choosable name, you can find the coordinates
@@ -138,24 +139,26 @@ put the chosen separator into quotation marks, the sign will always be
 recognized as a separator which can in case of space or comma cause
 troubles.
 
-Wikipedia and GeoHack:
+**Wikipedia and GeoHack:**
 
-1.  Search for your desired location in Wikipedia. Click on the
+1.  Search for your desired location in
+    [Wikipedia](https://en.wikipedia.org/wiki/Main_Page). Click on the
     coordinate in the right upper corner of Wikipedia, it will direct
-    you to Geohack (ref)
+    you to [Geohack](https://geohack.toolforge.org/)
 2.  Choose the format you prefer (we recommend the decimal degree format
     as it less susceptible to errors when copying and pasting)
 3.  Copy the first coordinate into “lat” column
 4.  Copy the second coordinate into “long” column
 
-Alternatively, you can obtain the coordinates from Open Street Map:
+**Alternatively, you can obtain the coordinates from Open Street Map:**
 
-1.  Find your desired location
+1.  Find your desired location in [Open Street
+    Map](https://geohack.toolforge.org/)
 2.  Right-click on it and select view address
 3.  Copy the first number into “lat” column
 4.  Copy the second number into “long” column
 
-Make sure that:
+**Make sure that:**
 
   - All your coordinates in one file are either in DMS or DD format, not
     both
@@ -163,7 +166,7 @@ Make sure that:
     usually problem number one if the coordinates do not correspond to
     the place.
 
-**Images**
+### Images
 
 There is also a possibility to include an image for every location. You
 can do so by creating the fourth column:
@@ -171,17 +174,17 @@ can do so by creating the fourth column:
   - A fixed column name “Image\_name” – a full picture name for a given
     location, e.g., bali\_paradise.png
 
-Also, note that the image option is all or nothing. If you decide to
+Also, note that **the image option is all or nothing**. If you decide to
 include images, then you need a picture for every listed destination
 because a pictureless destination will be automatically dropped. In
 terms of an image format, the app can work with all major formats, such
 as .png, .jpg, .jpeg. You can see below a demo dataset with the optional
-4th column for images. Note, that the columns names in bold must be the
-same.
+4th column for images. Note, that the **columns names in bold must be
+the same** as in this example.
 
-<img src="report/table.png">
+<img src="report/table.PNG">
 
-**Running the App**
+### Running the App
 
 Assuming you have cloned our github repository, you can run the app by
 opening either of the scripts: ui.R, server.R, app.R. Then click on the
@@ -207,7 +210,7 @@ The list of packages and their versions:
 | tidyverse    | 1.3.0      |
 | varhandle    | 2.0.5      |
 
-**Data Interaction with the App**
+### Data Interaction with the App
 
 We structured the app’s functionality into 4 parts: uploading and
 optionally conversing data, customizing marker and icon features,
@@ -255,25 +258,25 @@ created a map. If the latter, then we hope that you will find a use for
 your new map and learned something new about coordinate systems and
 maps.
 
-**References**
+### References
 
-Chakravarty, S. (2017, May 19). Maps that show why some countries are
-not as big as they look. Geospatial World.
-<https://www.geospatialworld.net/blogs/maps-that-show-why-some-countries-are-not-as-big-as-they-look/>
-
-Smith, H. (2020, February 27). Geographic vs Projected Coordinate
-Systems. ArcGIS Blog.
-<https://www.esri.com/arcgis-blog/products/arcgis-pro/mapping/gcs_vs_pcs/>
-
-Jennifer Betts. (2021). Latitude vs. Longitude: Differences in Simple
-Terms. YourDictionary.
+Betts, J. (2021). Latitude vs. Longitude: Differences in Simple Terms.
+YourDictionary.
 <https://examples.yourdictionary.com/latitude-vs-longitude-differences-simple-terms>
-
-Cheng, J., Karambelkar, B., & Xie, Y. (2021). leaflet: Create
-interactive web maps with the JavaScript “leaflet” library \[Manual\].
-<https://CRAN.R-project.org/package=leaflet>
 
 Chang, W., Cheng, J., Allaire, J., Sievert, C., Schloerke, B., Xie, Y.,
 Allen, J., McPherson, J., Dipert, A., & Borges, B. (2021). shiny: Web
 application framework for r \[Manual\].
 <https://CRAN.R-project.org/package=shiny>
+
+Chakravarty, S. (2017, May 19). Maps that show why some countries are
+not as big as they look. Geospatial World.
+<https://www.geospatialworld.net/blogs/maps-that-show-why-some-countries-are-not-as-big-as-they-look/>
+
+Cheng, J., Karambelkar, B., & Xie, Y. (2021). leaflet: Create
+interactive web maps with the JavaScript “leaflet” library \[Manual\].
+<https://CRAN.R-project.org/package=leaflet>
+
+Smith, H. (2020, February 27). Geographic vs Projected Coordinate
+Systems. ArcGIS Blog.
+<https://www.esri.com/arcgis-blog/products/arcgis-pro/mapping/gcs_vs_pcs/>
