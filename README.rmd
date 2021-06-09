@@ -26,6 +26,10 @@ Distributed under the MIT License. See ```LICENSE``` for more information.
 
 Firstly, we are glad that you decided to give a shot to our map-maker tool to create some nice and flashy travel maps. This tutorial aims to explain what data format our shiny (Chang et al., 2021) app expects and how to easily gather data from your pre-Covid trips if you don’t happen to have such data lying around in your computer.  To give some context, first, we will briefly review what a geographic coordinate system is and how a decimal degree format (DD) differs from the degrees-minutes-seconds system (DMS). We will also explain what the projected coordinate system is and how it works hand in hand with the geographic coordinate system. Then we will explain how to create a dataset compatible with our app without any spatial or programming knowledge. There are many and more ways how to create make one but we will focus primarily on using Wikipedia/Geohack, and Open Street Map.
 
+<img src="Travel_map_maker/bolivia_map.png">
+
+Map created with the Travel Map Maker
+
 ### Geographic coordinate system (GCS)
 
 A geographic coordinate system (GCS), also a datum, is a system for assigning a unique value to every single point of the Earth’s surface. As the Earth is far from a smooth and regular sphere, there are multiple models which depict the Earth slightly differently. Fortunately, we can leave pondering about which one is the best one for cartographers. Nearly all map coordinates you have ever encountered were derived from the GCS called  World Geodetic System 1984 (WGS84, WGS 1984, ESPG 4326). Unsurprisingly, the app’s map engine Leaflet (Cheng et al., 2021) expects the coordinates to be derived from this GCS.
@@ -33,7 +37,7 @@ A geographic coordinate system (GCS), also a datum, is a system for assigning a 
 The WGS84 uses longitudes and latitudes for describing a position relative to the center of the Earth. Longitudes are lines connecting poles that carry east-west information ranging from -180 to +180. Latitudes are in turn lines depicting the angle between the equator and a given location. Meaning, they are the lines parallel to the equator. They carry north-south information and consequently range from 0 to 90 (Smith, 2020). You can see both longitude and latitude in the picture below: 
  
 ![(Jennifer Betts, 2021)](https://assets.ltkcontent.com/images/92435/longitude-versus-latitude-earth_0066f46bde.jpg)
-Jennifer Betts. (2021)
+ (Betts, 2021)
 
 Not only are there are different GCSs but one system can also be written in different formats. They are two primarily used formats - Decimal Degrees (DD) and degrees-minutes-seconds (DMS). The DMS expresses the information in degrees, minutes, and seconds. Similarly, the DD stores the information in degrees but minutes and seconds are in decimal fractions. Analogically, when talking about time, you can express 90 minutes as a 1,5h (DM) or 1h and 30’ (DMS).
 Let´s take Dhaka, the capital of Bangladesh as an example. In the DD format, the coordinates are 23°43′44″ N, 90°23′40″ E, meaning the capital is located at the 23° degrees, 43 minutes and 44 seconds in the northern hemisphere, and 90° degrees, 23 minutes, 40 seconds in the east globe. In the DD format, the coordinates are 23.728889, 90.394444. 
@@ -91,7 +95,7 @@ You can see below a demo dataset with the optional 4th column for images. Note, 
 
 ### Running the App
 
-Assuming you have cloned our github repository, you can run the app by opening either of the scripts: ui.R, server.R, app.R. Then click on the button “Run App”. It is located in the upper ribbon where running options of an open script usually are. But first ensure that you have a list of these packages installed in the specific version. We cannot guarantee that it will work with different versions.
+Assuming you have cloned our github repository, you use the app by running ```runApp('Travel_map_maker')``` from the R console. But first ensure that you have a list of these packages installed in the specific version. We cannot guarantee that it will work with different versions.
 
 The list of packages and their versions:
 ```{r, echo = F}
