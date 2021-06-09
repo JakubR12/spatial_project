@@ -5,7 +5,7 @@ Peter Thramkrongart & Jakub Raszka
 
 **Cultural Data Science and Spatial Analytics**
 
-This is reposity for our exam project for the Spatial analytics 2021
+This is repository for our exam project for the Spatial analytics 2021
 course for Cultural Data Science 2020/2021 electoral program at Aarhus
 University
 
@@ -179,7 +179,7 @@ as .png, .jpg, .jpeg. You can see below a demo dataset with the optional
 4th column for images. Note, that the columns names in bold must be the
 same.
 
-![](report/table.png)
+<img src="report/table.png">
 
 **Running the App**
 
