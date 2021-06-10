@@ -34,6 +34,10 @@ dataset compatible with our app without any spatial or programming
 knowledge. There are many and more ways how to create make one but we
 will focus primarily on using Wikipedia/Geohack, and Open Street Map.
 
+<img src="Travel_map_maker/bolivia_map.png">
+
+Map created with the Travel Map Maker
+
 ### Geographic coordinate system (GCS)
 
 A geographic coordinate system (GCS), also a datum, is a system for
@@ -57,7 +61,7 @@ below:
 
 ![(Jennifer Betts,
 2021)](https://assets.ltkcontent.com/images/92435/longitude-versus-latitude-earth_0066f46bde.jpg)
-Jennifer Betts. (2021)
+(Betts, 2021)
 
 Not only are there are different GCSs but one system can also be written
 in different formats. They are two primarily used formats - Decimal
@@ -195,12 +199,10 @@ the same** as in this example.
 
 ### Running the App
 
-Assuming you have cloned our github repository, you can run the app by
-opening either of the scripts: ui.R, server.R, app.R. Then click on the
-button “Run App”. It is located in the upper ribbon where running
-options of an open script usually are. But first ensure that you have a
-list of these packages installed in the specific version. We cannot
-guarantee that it will work with different versions.
+Assuming you have cloned our github repository, you use the app by
+running `runApp('Travel_map_maker')` from the R console. But first
+ensure that you have a list of these packages installed in the specific
+version. We cannot guarantee that it will work with different versions.
 
 The list of packages and their versions:
 
