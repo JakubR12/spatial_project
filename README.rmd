@@ -11,7 +11,7 @@ library(tidyverse,knitr)
 ```
 ## Cultural Data Science and Spatial Analytics
 
-This is repository for our exam project for the Spatial analytics 2021 course for Cultural Data Science 2020/2021 electoral program at Aarhus University
+This is a repository for our exam project for the Spatial analytics 2021 course for Cultural Data Science 2020/2021 electoral program at Aarhus University
 
 ### Contact
 

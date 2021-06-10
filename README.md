@@ -5,7 +5,7 @@ Peter Thramkrongart & Jakub Raszka
 
 ## Cultural Data Science and Spatial Analytics
 
-This is repository for our exam project for the Spatial analytics 2021
+This is a repository for our exam project for the Spatial analytics 2021
 course for Cultural Data Science 2020/2021 electoral program at Aarhus
 University
 
@@ -39,12 +39,12 @@ will focus primarily on using Wikipedia/Geohack, and Open Street Map.
 A geographic coordinate system (GCS), also a datum, is a system for
 assigning a unique value to every single point of the Earth’s surface.
 As the Earth is far from a smooth and regular sphere, there are multiple
-models which depict the Earth slightly differently. Fortunately enough,
-we can leave pondering about which one is the best one for
-cartographers. Nearly all map coordinates you have ever encountered were
-derived from the GCS called World Geodetic System 1984 (WGS84, WGS 1984,
-ESPG 4326). Unsurprisingly, the app’s map engine Leaflet (Cheng et al.,
-2021) expects the coordinates to be derived from this GCS.
+models which depict the Earth slightly differently. Fortunately, we can
+leave pondering about which one is the best one for cartographers.
+Nearly all map coordinates you have ever encountered were derived from
+the GCS called World Geodetic System 1984 (WGS84, WGS 1984, ESPG 4326).
+Unsurprisingly, the app’s map engine Leaflet (Cheng et al., 2021)
+expects the coordinates to be derived from this GCS.
 
 The WGS84 uses longitudes and latitudes for describing a position
 relative to the center of the Earth. Longitudes are lines connecting
